@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #parent{
+            width:350px;
+            border:2px solid red;
+            padding:10px;
+            display:flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 100px auto;
+        }
+        #sp{
+            display:flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="parent">
+        <div id="sp">
+
+        </div>
+        <button id="back">Back</button>
+    </div>
+    <script>
+        const getUrlById = () => {
+            let URlParams = new URLSearchParams(window.location.search)
+            return URlParams.get('name')
+        }
+        const API = async (name) => {
+            let res = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`)
+            if(!res.ok){
+                return document.getElementById('sp').innerHTML = ' single product failed to fetch'
+            }
+            let data = await res.json()
+            displayData(data)
+        }
+        const displayData = (data) => {
+         let newDiv = document.getElementById('sp')
+         newDiv.innerHTML = `
+           <h2> ${data.name} </h2>
+           <img src="${data.sprites.other.dream_world.front_default}" width="150px"/>
+           <h4> ${data.weight} </h4>
+         `
+        }
+        const getId = getUrlById()
+        if(getId){
+            API(getId)
+        }else{
+            document.getElementById('sp').innerHTML = ' single product failed to fetch'
+        }
+        document.getElementById('back').addEventListener('click',() => {
+            window.location.href = '/pokimons'
+        })
+    </script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #dd{
+            display:flex;
+            flex-wrap:wrap;
+            gap:10px;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+        #dd li{
+            width:250px;
+            padding:10px;
+            border:1px solid grey;
+            border-radius:10px;
+            display:flex;
+            flex-wrap:wrap;
+            justify-content: center;
+            align-items: center;
+        }
+        a{
+            text-decoration: none;
+            font-size:16px;
+            color:black;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <button id="back">Back</button>
+    </div>
+    <div>
+        <h2 id="tot"></h2>
+        <ul id="dd"></ul>
+    </div>
+    <script>
+        let Products = []
+        const API = async () => {
+            let res = await fetch('https://pokeapi.co/api/v2/pokemon?limit=200')
+            let data = await res.json()
+            Products = data.results
+            genUI(Products)
+        }
+        const genUI = (data) => {
+         let dd = document.getElementById('dd')
+         dd.innerHTML = ''
+         data.forEach((p) => {
+            let newLi = document.createElement('li')
+            newLi.innerHTML = ` <a href="/singlePokimon?name=${p.name}"> ${p.name } </a>`
+            dd.appendChild(newLi)
+         })
+        }
+        API()
+        document.getElementById('back').addEventListener('click',() => {
+            window.location.href = '/'
+        })
+    </script>
+</body>
+</html>
